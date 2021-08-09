@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479 -->
+<html class="js-focus-visible" data-js-focus-visible=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>iTest - Giải pháp toàn diện cho tổ chức thi</title><meta http-equiv="Content-Type" content="text/html;"><meta name="keywords" content="thi online, thi trắc nghiệm, thi trực tuyến, thi trên máy, thi trên mạng, tạo đề thi, trộn đề thi, ngân hàng câu hỏi, ngân hàng đề thi"><meta name="description" content="Phần mềm thi trắc nghiệm trực tuyến iTest"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="Shortcut Icon" href="http://itest.actvn.edu.vn/logos/Hudevelop.ico"><link rel="stylesheet" type="text/css" href="./iTest - Giải pháp toàn diện cho tổ chức thi_files/bootstrap.min.css">
+<style type="text/css">
+.untaken_part{color:#0000ff;font-weight:normal;}
+.taken_part{color:#cccccc;font-weight:normal;}
+.untaken_part_group{color:#0000ff;font-weight:bold;}
+.worksheet{width:90%;height:100%;position:fixed;top:0px;left:0px;}
+.answersheet{width:10%;height:100%;position:fixed;top:0px;right:0px;padding-left:20px;overflow:auto;background-color:#99CCFF;}
+.normalContentPane{width:90%;position:fixed;top:77px;left:0px;overflow:auto;background-color:#ffffff;padding-left:10px;padding-right:10px;}
+.reducedContentPane{width:45%;position:fixed;top:77px;left:45%;overflow:auto;background-color:#ffffff;padding-left:10px;padding-right:10px;}
+.normalRef{position:static;width:90%;}
+.fixedRef{width:45%;height:90%;position:fixed;top:115px;left:0px;overflow:auto;background-color:#FFFFCC;padding-left:10px;padding-right:10px;}
+.controlPane{background-color:#ededed;}
+body{overflow:hidden;}
+.test-hint{background-color:Yellow;padding-top:3px;padding-bottom:0px;width:70%;margin-left:auto;margin-right:auto;text-align:center;}
+.confirm-dialog{position:fixed;top:76px;width:100%;height:100%;background-color:InfoBackground;padding:0px;}
+.confirm-dialog span{position:fixed;top:100px;text-align:center;width:100%;padding-right:80px;}
+.tester-answer{color:#FF0033;border-collapse:collapse;background-color:#99CCFF;border-bottom-style:none;border-left-style:none;border-right-style:none;border-top-style:none;}
+.tester-answer-precedence{color:#FF0033;background-color:#99CCFF;padding-left:10px;}
+img.stdphoto{width:40px;height:60px;position:fixed;top:1px;left:10px;cursor:pointer;z-index:9999;}
+img.stdphoto:hover {width:150px;height:200px;}
+.btn-link:focus,.btn-link:hover{text-decoration:none}
+div.qgroup_text_sticky {position:-webkit-sticky;position:sticky;top:0px;overflow:auto;}
+span.stdinfo {position:fixed;top:1px;left:55px;font-size:16px;font-weight:bold;}
+iframe.audio-frame{width:430px;height:35px;}
+iframe.video-frame{width:800px;height:500px;}
+ @media screen and  (max-width:767px) {
+    #UAS, div.answersheet, img.stdphoto, span.stdinfo {display:none;}
+    div.worksheet, div.normalContentPane { width: 100%; }
+    iframe.audio-frame{width:100%;height:35px}
+    iframe.video-frame{width:100%;height:500px;}
+}
+ span.questionlabel {font-weight:bold;}
+ table tr td > label {position:relative;bottom:2px;}  
+ table tr td > label~input[type=radio] {position:relative;top:0px;}
+</style>
+<script type="text/javascript">
+    var staticServer = "";
+function getXmlHttp() {
+    var xmlHttp = null;
+    try { xmlHttp = new XMLHttpRequest(); } 
+    catch (e) {
+        try { xmlHttp = new ActiveXObject("Msxml2.XMLHTTP"); } 
+        catch (e) {
+            try { xmlHttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+            catch (e) { console.log("Trình duyệt không hỗ trợ AJAX!"); }
+        }
+    }
+    return xmlHttp;
+}
+function setBGColor(obj, color) {
+	if (obj.nodeName == "#text") return;
+	obj.style.background = color;
+    }
+    function SelectAnswerSelected(question_sn, answer) {
+        document.getElementById("label" + question_sn + String(answer).toLowerCase()).nextSibling.nextSibling.checked = true;
+        SelectAnswer(question_sn, answer);
+    }
+function SelectAnswer(question_sn, answer) {
+	if (answer == "A") {		
+        setBGColor(document.getElementById("label" + question_sn + "a"), "#fffd00");
+        setBGColor(document.getElementById("label" + question_sn + "b"), "#ffffff");
+        setBGColor(document.getElementById("label" + question_sn + "c"), "#ffffff");
+		setBGColor(document.getElementById("label" + question_sn + "d"), "#ffffff");
+	} else if (answer == "B") {
+        setBGColor(document.getElementById("label" + question_sn + "b"), "#fffd00");
+        setBGColor(document.getElementById("label" + question_sn + "a"), "#ffffff");
+        setBGColor(document.getElementById("label" + question_sn + "c"), "#ffffff");
+		setBGColor(document.getElementById("label" + question_sn + "d"), "#ffffff");
+	} else if (answer == "C") 	{
+        setBGColor(document.getElementById("label" + question_sn + "c"), "#fffd00");
+        setBGColor(document.getElementById("label" + question_sn + "b"), "#ffffff");
+        setBGColor(document.getElementById("label" + question_sn + "a"), "#ffffff");
+        setBGColor(document.getElementById("label" + question_sn + "d"), "#ffffff");
+	} else {
+        setBGColor(document.getElementById("label" + question_sn + "d"), "#fffd00");
+        setBGColor(document.getElementById("label" + question_sn + "b"), "#ffffff");
+        setBGColor(document.getElementById("label" + question_sn + "c"), "#ffffff");
+		setBGColor(document.getElementById("label" + question_sn + "a"), "#ffffff");
+	}
+	document.getElementById("a"+question_sn).value = answer;
+    }
+    function MultiSelectOptSelected(question_sn, optth) {
+        document.getElementById("label" + question_sn + "_" + optth).nextSibling.nextSibling.checked = true;
+        MultiSelectOpt(question_sn, optth);
+    }
+function MultiSelectOpt(question_sn, optth) {
+    if (document.getElementById("label" + question_sn + "_" + optth).nextSibling.nextSibling.checked) {
+        setBGColor(document.getElementById("label" + question_sn + "_" + optth), "#fffd00");
+	} else {
+        setBGColor(document.getElementById("label" + question_sn + "_" + optth), "#ffffff");
+	}
+	let tbl = document.getElementById("catq" + question_sn);
+	let answer = "M{";
+	for (let i = 0; i < tbl.rows.length; i++){
+	    if (document.getElementById("label" + question_sn + "_" + i).nextSibling.nextSibling.checked) answer = answer + "1";
+		else answer = answer + "0";	
+		if (i < tbl.rows.length-1) answer = answer + ",";
+	}
+	answer = answer + "}";
+	document.getElementById("a"+question_sn).value = answer;
+}
+function SelectOptCat(question_sn, optth, catth, nopt, ncat) {
+    ioptth = parseInt(optth);
+    icatth = parseInt(catth);
+    inopt = parseInt(nopt);
+    incat = parseInt(ncat);
+    tbl = document.getElementById("catq" + question_sn); 
+    if (tbl.rows[ioptth].cells[icatth + 1].innerHTML.indexOf("images") >= 0) {
+        tbl.rows[ioptth].cells[icatth + 1].innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        setBGColor(tbl.rows[ioptth].cells[icatth + 1], "#ffffff");
+    } else {
+        for (i = 1; i <= incat; i++) {
+            tbl.rows[ioptth].cells[i + 1].innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            setBGColor(tbl.rows[ioptth].cells[i + 1], "#ffffff");
+        }
+        tbl.rows[ioptth].cells[icatth + 1].innerHTML = "&nbsp;&nbsp;<img src='" + staticServer + "/images/button_yes.gif'/>&nbsp;&nbsp;";
+        setBGColor(tbl.rows[ioptth].cells[icatth + 1], "#fffd00");
+    }
+    answer = "M{";
+    for (j = 1; j <= inopt; j++) {
+        for (i = 1; i <= incat; i++)
+            if (tbl.rows[j].cells[i + 1].innerHTML.indexOf("images") >= 0) break;
+        if (i <= incat) answer = answer + i;
+        else answer = answer + "0";
+
+        if (j < inopt) answer = answer + ",";
+    }
+    answer = answer + "}";
+    document.getElementById("a" + question_sn).value = answer;
+}
+function MatchOptCat(question_sn, optth, nopt) {
+    ioptth = parseInt(optth);
+    inopt = parseInt(nopt);
+    for (i = 0; i < inopt; i++) {
+        if (i != ioptth)
+            if (document.getElementById("sl" + question_sn + "_" + i).selectedIndex == 
+                document.getElementById("sl" + question_sn + "_" + ioptth).selectedIndex) {
+                document.getElementById("sl" + question_sn + "_" + i).selectedIndex = 0;
+                setBGColor(document.getElementById("sl" + question_sn + "_" + i), "#ffffff");
+        }
+    }
+    if (document.getElementById("sl" + question_sn + "_" + ioptth).selectedIndex == 0) {
+        setBGColor(document.getElementById("sl" + question_sn + "_" + ioptth), "#ffffff");
+    } else {
+        setBGColor(document.getElementById("sl" + question_sn + "_" + ioptth), "#fffd00");
+    }
+    answer = "M{";
+    for (i = 1; i <= inopt; i++)
+    {
+        for (j = 0; j < inopt; j++)
+            if (document.getElementById("sl" + question_sn + "_" + j).selectedIndex == i) break;
+        if (j < inopt) answer = answer + (j + 1);
+        else answer = answer + "0";
+        if (i < inopt) answer = answer + ",";
+    }
+    answer = answer + "}";
+    document.getElementById("a" + question_sn).value = answer;
+}
+function showKeyCode(e) {
+    if (window.event) e = window.event;
+    if (e.keyCode == 116 || e.ctrlKey || e.altKey) { /* F5 hoac Ctrl+... */
+        e.keyCode = 0; e.returnValue = false;
+        return false;
+    }
+}
+function shortAnswer(question_sn, answer) {
+    document.getElementById("a" + question_sn).style.display = "none";
+    if (answer == "") {
+        document.getElementById("a" + question_sn + "_precedence").innerHTML = "-";
+        document.getElementById("a" + question_sn).value = "-";
+        document.getElementById("shortAnswer" + question_sn).style.background = "#ffffff";
+    } else {
+        document.getElementById("a" + question_sn + "_precedence").innerHTML = "X";
+        document.getElementById("a" + question_sn).value = "F{" + answer.replace("{", "").replace("}", "") + "}";
+        document.getElementById("shortAnswer" + question_sn).style.background = "#fffd00";
+    }
+}
+var nocTypingAnswer = 0;
+var typingQsn = 0, typingQid = 0, typingTqid = 0, typingPbtqid = 0;
+function typingAnswer(question_sn, question_id, tq_id, pb_TQID) {
+    nocTypingAnswer++;
+    typingQsn = question_sn;
+    typingQid = question_id;
+    typingTqid = tq_id;
+    typingPbtqid = pb_TQID;
+    if (document.getElementById("textanswer" + question_sn).value.trim() == "") {
+        document.getElementById("textanswer" + question_sn).style.background = "#ffffff";
+        document.getElementById("tawc" + question_sn).innerHTML = "0";
+    } else {
+        document.getElementById("textanswer" + question_sn).style.background = "#fffd00";
+        var tas = document.getElementById("textanswer" + question_sn).value;
+        document.getElementById("tawc" + question_sn).innerHTML = tas.replace(/\s+/g, ' ').trim().split(' ').length.toString();
+    }
+
+    if (nocTypingAnswer == 180) textAnswer(question_sn, question_id, tq_id, pb_TQID);
+}
+function textAnswer(question_sn, question_id, tq_id, pb_TQID) {
+    if (nocTypingAnswer > 0) {
+        nocTypingAnswer = 0;
+        typingQsn = 0;
+        typingQid = 0;
+        typingTqid = 0;
+        typingPbtqid = 0;
+        document.getElementById("a" + question_sn).value = "T{" + question_sn + "}";
+        var paras = "pbt_id=" + document.getElementById("pbt_id").value + 
+                    "&question_sn=" + question_sn + 
+                    "&question_id=" + question_id + 
+                    "&tq_id=" + tq_id + 
+                    "&pb_TQID=" + pb_TQID + 
+                    "&ta_textAnswer=" + document.getElementById("textanswer" + question_sn).value.replace(/\r?\n/g, "{hudevelop}");
+        var xmlHttp = getXmlHttp();
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.responseText == "OK") {
+                    
+                } else {
+                    unRepliedRequests++;
+                }
+            }
+        };
+        xmlHttp.open("POST", "SaveTextAnswer.aspx", true);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlHttp.send(paras);
+    }
+}
+    var currentVideoAnswerFrm = null;
+    var currentVideoAnswerFrmCleared = true; 
+    function videoAnswer(question_sn, question_id, tq_id, pb_TQID) {
+        document.getElementById("videoanswerbtn" + question_sn).style.display = "none";
+        document.getElementById("a" + question_sn).value = "V{" + question_sn + "}";
+        document.getElementById("videoanswer" + question_sn).style.display = "";
+        document.getElementById("videoanswer" + question_sn).src = "VideoAnswer.aspx?pbt_id=" + document.getElementById("pbt_id").value + "&question_sn=" + question_sn + "&question_id=" + question_id + "&tq_id=" + tq_id + "&pb_TQID=" + pb_TQID;
+        currentVideoAnswerFrm = document.getElementById("videoanswer" + question_sn);
+        currentVideoAnswerFrmCleared = false;
+    }
+
+    function fileAnswer(question_sn, question_id, tq_id, pb_TQID) {
+        document.getElementById("fileanswerbtn" + question_sn).style.display = "none";
+        document.getElementById("a" + question_sn).value = "T{" + question_sn + "}";
+        document.getElementById("fileanswer" + question_sn).style.display = "";
+        document.getElementById("fileanswer" + question_sn).src = "FileAnswer.aspx?pbt_id=" + document.getElementById("pbt_id").value + "&question_sn=" + question_sn + "&question_id=" + question_id + "&tq_id=" + tq_id + "&pb_TQID=" + pb_TQID;
+    }
+</script>
+<script type="text/javascript" src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/MathJax.js.tải xuống"></script>
+<style type="text/css" data-styled-components="FiaaB gTcftA caPIRE" data-styled-components-is-local="true">
+/* sc-component-id: sc-keyframes-FiaaB */
+@-webkit-keyframes FiaaB{100%{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg);}}@keyframes FiaaB{100%{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg);}}
+/* sc-component-id: sc-keyframes-gTcftA */
+@-webkit-keyframes gTcftA{10%,90%{-webkit-transform:translate3d(-1px,0,0);-ms-transform:translate3d(-1px,0,0);transform:translate3d(-1px,0,0);}20%,80%{-webkit-transform:translate3d(2px,0,0);-ms-transform:translate3d(2px,0,0);transform:translate3d(2px,0,0);}30%,50%,70%{-webkit-transform:translate3d(-4px,0,0);-ms-transform:translate3d(-4px,0,0);transform:translate3d(-4px,0,0);}40%,60%{-webkit-transform:translate3d(4px,0,0);-ms-transform:translate3d(4px,0,0);transform:translate3d(4px,0,0);}}@keyframes gTcftA{10%,90%{-webkit-transform:translate3d(-1px,0,0);-ms-transform:translate3d(-1px,0,0);transform:translate3d(-1px,0,0);}20%,80%{-webkit-transform:translate3d(2px,0,0);-ms-transform:translate3d(2px,0,0);transform:translate3d(2px,0,0);}30%,50%,70%{-webkit-transform:translate3d(-4px,0,0);-ms-transform:translate3d(-4px,0,0);transform:translate3d(-4px,0,0);}40%,60%{-webkit-transform:translate3d(4px,0,0);-ms-transform:translate3d(4px,0,0);transform:translate3d(4px,0,0);}}
+/* sc-component-id: sc-keyframes-caPIRE */
+@-webkit-keyframes caPIRE{0%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}20%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}40%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}60%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}80%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}100%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}}@keyframes caPIRE{0%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}20%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}40%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}60%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}80%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}100%{-webkit-transform:scale(.75);-ms-transform:scale(.75);transform:scale(.75);}}</style><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888; display: contents}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">div.MathJax_MathML {text-align: center; margin: .75em 0px; display: block!important}
+.MathJax_MathML {font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+span.MathJax_MathML {display: inline!important}
+.MathJax_mmlExBox {display: block!important; overflow: hidden; height: 1px; width: 60ex; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0}
+[class="MJX-tex-oldstyle"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-oldstyle-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+[class="MJX-tex-caligraphic"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-caligraphic-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+@font-face /*1*/ {font-family: MathJax_Caligraphic-WEB; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf')}
+@font-face /*2*/ {font-family: MathJax_Caligraphic-WEB; font-weight: bold; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Bold.otf')}
+[mathvariant="double-struck"] {font-family: MathJax_AMS, MathJax_AMS-WEB}
+[mathvariant="script"] {font-family: MathJax_Script, MathJax_Script-WEB}
+[mathvariant="fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB}
+[mathvariant="bold-script"] {font-family: MathJax_Script, MathJax_Caligraphic-WEB; font-weight: bold}
+[mathvariant="bold-fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB; font-weight: bold}
+[mathvariant="monospace"] {font-family: monospace}
+[mathvariant="sans-serif"] {font-family: sans-serif}
+[mathvariant="bold-sans-serif"] {font-family: sans-serif; font-weight: bold}
+[mathvariant="sans-serif-italic"] {font-family: sans-serif; font-style: italic}
+[mathvariant="sans-serif-bold-italic"] {font-family: sans-serif; font-style: italic; font-weight: bold}
+@font-face /*3*/ {font-family: MathJax_AMS-WEB; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf')}
+@font-face /*4*/ {font-family: MathJax_Script-WEB; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf')}
+@font-face /*5*/ {font-family: MathJax_Fraktur-WEB; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Regular.otf')}
+@font-face /*6*/ {font-family: MathJax_Fraktur-WEB; font-weight: bold; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Bold.otf')}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">
+@font-face {
+  font-weight: 400;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Book-cd7d2bcec649b1243839a15d5eb8f0a3.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Medium-d74eac43c78bd5852478998ce63dceb3.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 700;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Bold-83b8ceaf77f49c7cffa44107561909e4.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Black-bf067ecb8aa777ceb6df7d72226febca.woff2') format('woff2');
+}</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none; box-sizing: content-box}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_test {font-style: normal; font-weight: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow: hidden; height: 1px}
+.MathJax_test.mjx-test-display {display: table!important}
+.MathJax_test.mjx-test-inline {display: inline!important; margin-right: -1px}
+.MathJax_test.mjx-test-default {display: block!important; clear: both}
+.MathJax_ex_box {display: inline-block!important; position: absolute; overflow: hidden; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0; width: 1px; height: 60ex}
+.MathJax_em_box {display: inline-block!important; position: absolute; overflow: hidden; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0; width: 1px; height: 60em}
+.mjx-test-inline .MathJax_left_box {display: inline-block; width: 0; float: left}
+.mjx-test-inline .MathJax_right_box {display: inline-block; width: 0; float: right}
+.mjx-test-display .MathJax_right_box {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?V=2.7.8') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?V=2.7.8') format('woff'), url('http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?V=2.7.8') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style>
+      .glot-sub-active{
+        color: #1296ba !important;
+      }
+      
+      .glot-sub-hovered{
+        color: #1296ba !important;
+      }
+      .glot-sub-clzz{
+        cursor: pointer;
+        
+        lineHeight: 1.2;
+          font-size: 32px;
+          color: #FFCC00; background: rgba(17, 17, 17, 0.7);
+        
+      }
+      .glot-sub-clzz:hover{
+        color: #1296ba !important;
+      }
+      .ej-trans-sub{
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999999;
+        cursor: move;
+      }
+      .ej-trans-sub > span{
+        color: #3CF9ED;
+        font-size: 18px;
+        text-align: center;
+        padding: 0 16px;
+        line-height: 1.5;
+        background: rgba(32, 26, 25, 0.8);
+        // text-shadow: 0px 1px 4px black;
+        padding: 0 8px;
+        
+        lineHeight: 1.2;
+        font-size: 22px;
+        color: #0CB1C7; background: rgba(67, 65, 65, 0.7);
+      
+      }
+      .ej-main-sub{
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999;
+        cursor: move;
+        padding: 0 8px;
+      }
+      .ej-main-sub > span{
+        color: white;
+        font-size: 20px;
+        line-height: 1.5;
+        text-align: center;
+        background: rgba(32, 26, 25, 0.8);
+        // text-shadow: 0px 1px 4px black;
+        padding: 2px 8px;
+        
+        lineHeight: 1.2;
+          font-size: 32px;
+          color: #FFCC00; background: rgba(17, 17, 17, 0.7);
+        
+      }
+
+      .ej-main-sub .glot-sub-clzz{
+        background: transparent !important
+      }
+
+      .tran-subtitle > .view-icon-edit-sub{
+        cursor: pointer;
+        padding-left: 10px;
+        top: 2px;
+        position: relative;
+      }
+
+      .tran-subtitle > .view-icon-edit-sub > svg{
+        width: 16px;
+        height: 16px;
+        pointer-events: none;
+      }
+      
+      </style></head><body onkeydown="return showKeyCode(event);"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"><br><br></div></div><div id="MathJax_Message" style="display: none;"></div>
+<script type="text/javascript">var sec_part = new Array();var sec_c = 0;</script><div class="worksheet"><div class="controlPane"><input type="hidden" id="seconds"><input type="hidden" id="minutesLeft" value="45"><input type="hidden" id="secondsLeft"><input type="hidden" id="std_id" value="3464"><input type="hidden" id="pbt_id" value="479"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/nophoto.jpg" class="stdphoto" title=""><span class="stdinfo"></span><span id="hotnote" style="position:fixed;top:75px;left:0px;background-color:#ff0000;z-index:1;display:none;">Mất kết nối máy chủ. Bạn cần thông báo cho cán bộ coi thi để được đặt lại kết nối.<br> Việc mất kết nối không ảnh hưởng đến bài làm của bạn nếu được khắc phục trước khi bạn nộp bài hoặc hết thời gian làm bài.</span><table style="width:100%;"><tbody><tr><td style="text-align:center;"><label style="color:#898989;font-size:16px;" id="testtitlelabel">THI KTHP 2020-2021</label></td><td style="width:80px;"><input type="text" id="showTime" readonly="true" style="font-size:16px;background-color:#ededed;width:80px;font-weight:bold;color:#FF0000;border:0px;"></td></tr><tr><td style="text-align:center;"><select id="partSelector" style="display:none;"><option value="19">LỰA CHỌN PHƯƠNG ÁN ĐÚNG</option></select><div class="btn-group" role="group" id="partButtons" style=""><button name="partButtonAct" type="button" class="btn btn-xs btn-info" onclick="partButtonAct(this,0);" style="border-bottom: 3px solid rgb(255, 0, 0);">Lựa chọn phương án đúng</button></div></td><td><button type="button" id="btnSubmitTest" onclick="Napbai();" class="btn btn-primary" style="">Nộp bài</button></td></tr></tbody></table></div><script type="text/javascript">document.getElementById("testtitlelabel").innerHTML="THI KTHP 2020-2021";</script><div id="idPreview" class="normalContentPane" style="height: 674px;"><p style="color: rgb(92, 92, 92); padding-top: 15px; padding-bottom: 10px; display: none;" id="pdirection2">Bài thi bao gồm các phần:</p><span class="untaken_part_group" id="rfg_16_title" style="display: none;">TRẮC NGHIỆM</span><br><script type="text/javascript">sec_c = sec_c + 1;sec_part[sec_c] = new Array();sec_part[sec_c][0] = 16;sec_part[sec_c][1] = 0;</script><div id="rfg_16"><script type="text/javascript">sec_part[sec_c][1]++;sec_part[sec_c][sec_part[sec_c][1]+1] = 19;</script><span class="taken_part" id="rf_19_title" style="display: none;">&nbsp;&nbsp;LỰA CHỌN PHƯƠNG ÁN ĐÚNG</span><input type="hidden" name="rf_selective_h" value="0"><br><div id="rf_19" style="width: 100%; height: 100%; padding-left: 10px; padding-right: 10px; position: absolute; top: 0px; left: 0px; background-color: rgb(255, 255, 255);"><table><tbody><tr><td valign="top" style="width:0px;"></td><td valign="top" style="padding-left:5px;padding-right:5px;"><table><tbody><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink1"><span name="questionlabel">Câu</span> 1.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Cho bảng user gồm các cột id, firstname,
+lastname, email và age. Sử dụng điều kiện nào trong câu SQL để in ra những user
+từ 20 đến 40 tuổi?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label1a">(A)</label> <input type="radio" name="radio1" onclick="SelectAnswer(1, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span1a"><p><span>BETWEEN 25 – 40</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label1b">(B)</label> <input type="radio" name="radio1" onclick="SelectAnswer(1, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span1b"><p><span>BETWEEN 25 &amp; 40</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label1c">(C)</label> <input type="radio" name="radio1" onclick="SelectAnswer(1, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span1c"><p><span>BETWEEN
+25 AND 40</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label1d">(D)</label> <input type="radio" name="radio1" onclick="SelectAnswer(1, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span1d"><p><span>BETWEEN 25 TO 40</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink2"><span name="questionlabel">Câu</span> 2.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Kết quả hiển thị sau khi thực hiện đoạn mã sau:</span></p>
+
+<p><span>&lt;?php</span></p>
+
+<p><span>$foo = 'bar';</span></p>
+
+<p><span>echo '$foo\'' . "$foo\'";</span></p>
+
+<p><span>?&gt;</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label2a">(A)</label> <input type="radio" name="radio2" onclick="SelectAnswer(2, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span2a"><p><span>$foo'bar\'</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label2b">(B)</label> <input type="radio" name="radio2" onclick="SelectAnswer(2, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span2b"><p><span>bar'$foo\'</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label2c">(C)</label> <input type="radio" name="radio2" onclick="SelectAnswer(2, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span2c"><p><span>$foo'bar</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label2d">(D)</label> <input type="radio" name="radio2" onclick="SelectAnswer(2, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span2d"><p><span>$foobar</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink3"><span name="questionlabel">Câu</span> 3.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong SQL, sử dụng từ khóa nào để cập nhật dữ
+liệu?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label3a">(A)</label> <input type="radio" name="radio3" onclick="SelectAnswer(3, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span3a"><p><span>SAVE</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label3b">(B)</label> <input type="radio" name="radio3" onclick="SelectAnswer(3, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span3b"><p><span>UPDATE</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label3c">(C)</label> <input type="radio" name="radio3" onclick="SelectAnswer(3, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span3c"><p><span>SAVE AS</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label3d">(D)</label> <input type="radio" name="radio3" onclick="SelectAnswer(3, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span3d"><p><span>MODIFY</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink4"><span name="questionlabel">Câu</span> 4.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Phần tử HTML nào xác định phần cuối của tải
+liệu?</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label4a">(A)</label> <input type="radio" name="radio4" onclick="SelectAnswer(4, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span4a"><p><span> </span><span>&lt;bottom&gt;</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label4b">(B)</label> <input type="radio" name="radio4" onclick="SelectAnswer(4, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span4b"><p><span> </span><span>&lt;section&gt;</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label4c">(C)</label> <input type="radio" name="radio4" onclick="SelectAnswer(4, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span4c"><p><span> </span><span>&lt;footer&gt;</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label4d">(D)</label> <input type="radio" name="radio4" onclick="SelectAnswer(4, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span4d"><p><span> </span><span>Cả
+3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink5"><span name="questionlabel">Câu</span> 5.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong PHP, mọi file được Include phải có phần
+mở rộng ".inc"</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label5a">(A)</label> <input type="radio" name="radio5" onclick="SelectAnswer(5, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span5a"><p><span>Sai</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label5b">(B)</label> <input type="radio" name="radio5" onclick="SelectAnswer(5, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span5b"><p><span>Đúng</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label5c">(C)</label> <input type="radio" name="radio5" onclick="SelectAnswer(5, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span5c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label5d">(D)</label> <input type="radio" name="radio5" onclick="SelectAnswer(5, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span5d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink6"><span name="questionlabel">Câu</span> 6.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong CSS, l</span><span>ựa chọn nào xác định tên lớp là “test”?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label6a">(A)</label> <input type="radio" name="radio6" onclick="SelectAnswer(6, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span6a"><p><span>#test</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label6b">(B)</label> <input type="radio" name="radio6" onclick="SelectAnswer(6, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span6b"><p><span>.test</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label6c">(C)</label> <input type="radio" name="radio6" onclick="SelectAnswer(6, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span6c"><p><span>*test</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label6d">(D)</label> <input type="radio" name="radio6" onclick="SelectAnswer(6, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span6d"><p><span>test</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink7"><span name="questionlabel">Câu</span> 7.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Phần tử HTML nào thực
+hiện xuống dòng mới?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label7a">(A)</label> <input type="radio" name="radio7" onclick="SelectAnswer(7, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span7a"><p><span>&lt;br&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label7b">(B)</label> <input type="radio" name="radio7" onclick="SelectAnswer(7, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span7b"><p><span>&lt;break&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label7c">(C)</label> <input type="radio" name="radio7" onclick="SelectAnswer(7, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span7c"><p><span>&lt;lb&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label7d">(D)</label> <input type="radio" name="radio7" onclick="SelectAnswer(7, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span7d"><p><span>&lt;p&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink8"><span name="questionlabel">Câu</span> 8.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Cách nào để làm tròn 7.25 tới số nguyên gần
+nhất trong JavaScript?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label8a">(A)</label> <input type="radio" name="radio8" onclick="SelectAnswer(8, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span8a"><p><span>round(7.25)</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label8b">(B)</label> <input type="radio" name="radio8" onclick="SelectAnswer(8, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span8b"><p><span>rnd(7.25)</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label8c">(C)</label> <input type="radio" name="radio8" onclick="SelectAnswer(8, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span8c"><p><span>Math.rnd(7.25)</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label8d">(D)</label> <input type="radio" name="radio8" onclick="SelectAnswer(8, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span8d"><p><span>Math.round(7.25)</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink9"><span name="questionlabel">Câu</span> 9.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Đoạn mã HTML nào thực hiện việc thêm màu nền cho trang web?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label9a">(A)</label> <input type="radio" name="radio9" onclick="SelectAnswer(9, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span9a"><p><span>&lt;background&gt;yellow&lt;/background&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label9b">(B)</label> <input type="radio" name="radio9" onclick="SelectAnswer(9, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span9b"><p><span>&lt;body style=”color:yellow;”&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label9c">(C)</label> <input type="radio" name="radio9" onclick="SelectAnswer(9, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span9c"><p><span>&lt;body style=”background-color:yellow;”&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label9d">(D)</label> <input type="radio" name="radio9" onclick="SelectAnswer(9, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span9d"><p><span>&lt;body bg=”yellow”&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink10"><span name="questionlabel">Câu</span> 10.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong PHP, trong các cách sau đây, cách nào giúp nhận được dữ liệu gửi đi
+từ Form mà không chắc chắn cơ chế nó được gửi đi như thế nào (theo POST hay
+GET)?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label10a">(A)</label> <input type="radio" name="radio10" onclick="SelectAnswer(10, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span10a"><p><span>$_POST[]</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label10b">(B)</label> <input type="radio" name="radio10" onclick="SelectAnswer(10, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span10b"><p><span>$_GET[]</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label10c">(C)</label> <input type="radio" name="radio10" onclick="SelectAnswer(10, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span10c"><p><span>$_REQUEST[]</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label10d">(D)</label> <input type="radio" name="radio10" onclick="SelectAnswer(10, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span10d"><p><span>$_SEND[]</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink11"><span name="questionlabel">Câu</span> 11.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong PHP, h</span><span>ai hàm die() and exit() trích xuất thông tin
+như nhau</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label11a">(A)</label> <input type="radio" name="radio11" onclick="SelectAnswer(11, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span11a"><p><span>Sai</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label11b">(B)</label> <input type="radio" name="radio11" onclick="SelectAnswer(11, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span11b"><p><span>Đúng</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label11c">(C)</label> <input type="radio" name="radio11" onclick="SelectAnswer(11, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span11c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label11d">(D)</label> <input type="radio" name="radio11" onclick="SelectAnswer(11, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span11d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink12"><span name="questionlabel">Câu</span> 12.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Thông thường, JavaScript là ngôn ngữ xử lý ở đâu?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label12a">(A)</label> <input type="radio" name="radio12" onclick="SelectAnswer(12, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span12a"><p><span>Cả client và server</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label12b">(B)</label> <input type="radio" name="radio12" onclick="SelectAnswer(12, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span12b"><p><span>Client</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label12c">(C)</label> <input type="radio" name="radio12" onclick="SelectAnswer(12, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span12c"><p><span>Server</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label12d">(D)</label> <input type="radio" name="radio12" onclick="SelectAnswer(12, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span12d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink13"><span name="questionlabel">Câu</span> 13.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, để mở một cửa sổ trình duyệt mới, ta sử dụng:</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label13a">(A)</label> <input type="radio" name="radio13" onclick="SelectAnswer(13, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span13a"><p><span>window._open()</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label13b">(B)</label> <input type="radio" name="radio13" onclick="SelectAnswer(13, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span13b"><p><span>window.open()</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label13c">(C)</label> <input type="radio" name="radio13" onclick="SelectAnswer(13, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span13c"><p><span>Document.open()</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label13d">(D)</label> <input type="radio" name="radio13" onclick="SelectAnswer(13, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span13d"><p><span>windows.open()</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink14"><span name="questionlabel">Câu</span> 14.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Nơi nào trong tài liệu HTML phù hợp để tham chiếu tới một file CSS ngoài?</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label14a">(A)</label> <input type="radio" name="radio14" onclick="SelectAnswer(14, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span14a"><p><span> </span><span>In the &lt;head&gt; section</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label14b">(B)</label> <input type="radio" name="radio14" onclick="SelectAnswer(14, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span14b"><p><span> </span><span>At
+the end of the document</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label14c">(C)</label> <input type="radio" name="radio14" onclick="SelectAnswer(14, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span14c"><p><span> </span><span>In
+the &lt;body&gt; section</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label14d">(D)</label> <input type="radio" name="radio14" onclick="SelectAnswer(14, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span14d"><p><span> </span><span>Cả
+3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink15"><span name="questionlabel">Câu</span> 15.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Kết quả hiển thị sau khi thực hiện đoạn mã sau:</span></p>
+
+<p><span>&lt;?php</span></p>
+
+<p><span>function modvalue()</span></p>
+
+<p><span>{</span></p>
+
+<p><span>$a=20;</span></p>
+
+<p><span>$b=4;</span></p>
+
+<p><span>$c=$a%$b;</span></p>
+
+<p><span>print($c);</span></p>
+
+<p><span>} </span></p>
+
+<p><span>modvalue();</span></p>
+
+<p><span>?&gt;</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label15a">(A)</label> <input type="radio" name="radio15" onclick="SelectAnswer(15, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span15a"><p><span>0</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label15b">(B)</label> <input type="radio" name="radio15" onclick="SelectAnswer(15, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span15b"><p><span>20</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label15c">(C)</label> <input type="radio" name="radio15" onclick="SelectAnswer(15, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span15c"><p><span>4</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label15d">(D)</label> <input type="radio" name="radio15" onclick="SelectAnswer(15, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span15d"><p><span>5</span></p>
+
+<p></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink16"><span name="questionlabel">Câu</span> 16.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Kết quả hiển thị sau khi thực hiện đoạn mã
+sau:</span></p>
+
+<p><span>&lt;?php </span></p>
+
+<p><span>$a=5;</span></p>
+
+<p><span>$b=12;</span></p>
+
+<p><span>$c=10;</span></p>
+
+<p><span>$d=7;</span></p>
+
+<p><span>$e=($a*$b)+$c*$d/$a;</span></p>
+
+<p><span>print($e);</span></p>
+
+<p><span>?&gt;</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label16a">(A)</label> <input type="radio" name="radio16" onclick="SelectAnswer(16, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span16a"><p><span>154</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label16b">(B)</label> <input type="radio" name="radio16" onclick="SelectAnswer(16, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span16b"><p><span>26</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label16c">(C)</label> <input type="radio" name="radio16" onclick="SelectAnswer(16, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span16c"><p><span>130</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label16d">(D)</label> <input type="radio" name="radio16" onclick="SelectAnswer(16, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span16d"><p><span>74</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink17"><span name="questionlabel">Câu</span> 17.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Hàm </span><span>rsort()</span><span>trong PHP được </span><span>sử dụng để:</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label17a">(A)</label> <input type="radio" name="radio17" onclick="SelectAnswer(17, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span17a"><p><span> </span><span>Sắp xếp mảng theo thứ tự giảm dần</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label17b">(B)</label> <input type="radio" name="radio17" onclick="SelectAnswer(17, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span17b"><p><span> </span><span>Sắp
+xếp mảng theo thứ tự tăng dần</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label17c">(C)</label> <input type="radio" name="radio17" onclick="SelectAnswer(17, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span17c"><p><span> S</span><span>ắp
+xếp chỉ số của mảng</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label17d">(D)</label> <input type="radio" name="radio17" onclick="SelectAnswer(17, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span17d"><p><span> </span><span>Cả
+3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink18"><span name="questionlabel">Câu</span> 18.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong HTML, đ</span><span>ể khai báo một phần tử điều khiển khi nhấn
+vào sẽ gửi thông tin của Form đi ta sử dụng thẻ:</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label18a">(A)</label> <input type="radio" name="radio18" onclick="SelectAnswer(18, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span18a"><p><span>&lt;INPUT TYPE= “PASSWORD”</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label18b">(B)</label> <input type="radio" name="radio18" onclick="SelectAnswer(18, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span18b"><p><span>&lt;INPUT TYPE = “RESET”&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label18c">(C)</label> <input type="radio" name="radio18" onclick="SelectAnswer(18, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span18c"><p><span>&lt;INPUT
+TYPE = “SUBMIT”</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label18d">(D)</label> <input type="radio" name="radio18" onclick="SelectAnswer(18, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span18d"><p><span>&lt;INPUT TYPE= “TEXT”&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink19"><span name="questionlabel">Câu</span> 19.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>PDO cho phép làm việc với nhiều hệ quản trị CSDL khác nhau, còn MySQLi chỉ
+làm việc với MySQL?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label19a">(A)</label> <input type="radio" name="radio19" onclick="SelectAnswer(19, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span19a"><p><span>Sai</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label19b">(B)</label> <input type="radio" name="radio19" onclick="SelectAnswer(19, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span19b"><p><span>Đúng</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label19c">(C)</label> <input type="radio" name="radio19" onclick="SelectAnswer(19, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span19c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label19d">(D)</label> <input type="radio" name="radio19" onclick="SelectAnswer(19, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span19d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink20"><span name="questionlabel">Câu</span> 20.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Tag </span><span>HTML </span><span>nào dùng để tạo hình nền cho web?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label20a">(A)</label> <input type="radio" name="radio20" onclick="SelectAnswer(20, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span20a"><p><span>&lt;body background="background.gif"&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label20b">(B)</label> <input type="radio" name="radio20" onclick="SelectAnswer(20, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span20b"><p><span>&lt;img src="background.gif" background&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label20c">(C)</label> <input type="radio" name="radio20" onclick="SelectAnswer(20, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span20c"><p><span>&lt;background img="background.gif"&gt;</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label20d">(D)</label> <input type="radio" name="radio20" onclick="SelectAnswer(20, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span20d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink21"><span name="questionlabel">Câu</span> 21.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong CSS, t</span><span>ính chất</span><span>text-align</span><span>được sử dụng để căn lề ngang cho một đoạn văn bản đúng
+hay sai?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label21a">(A)</label> <input type="radio" name="radio21" onclick="SelectAnswer(21, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span21a"><p><span>Đúng</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label21b">(B)</label> <input type="radio" name="radio21" onclick="SelectAnswer(21, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span21b"><p><span>Sai</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label21c">(C)</label> <input type="radio" name="radio21" onclick="SelectAnswer(21, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span21c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label21d">(D)</label> <input type="radio" name="radio21" onclick="SelectAnswer(21, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span21d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink22"><span name="questionlabel">Câu</span> 22.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>PHP từ phiên bản 5.0 trở lên, cho phép làm việc
+với MySQL theo:</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label22a">(A)</label> <input type="radio" name="radio22" onclick="SelectAnswer(22, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span22a"><p><span> </span><span>MySQLi </span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label22b">(B)</label> <input type="radio" name="radio22" onclick="SelectAnswer(22, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span22b"><p><span> </span><span>PDO
+(PHP Data Objects)</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label22c">(C)</label> <input type="radio" name="radio22" onclick="SelectAnswer(22, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span22c"><p><span> </span><span>Cả a và b</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label22d">(D)</label> <input type="radio" name="radio22" onclick="SelectAnswer(22, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span22d"><p><span> </span><span>Không
+hỗ trợ loại nào</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink23"><span name="questionlabel">Câu</span> 23.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong HTML, đ</span><span>ể chèn hình ảnh vào trang web ta dùng thẻ:</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label23a">(A)</label> <input type="radio" name="radio23" onclick="SelectAnswer(23, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span23a"><p><span>&lt;IMAGE&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label23b">(B)</label> <input type="radio" name="radio23" onclick="SelectAnswer(23, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span23b"><p><span>&lt;IMG&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label23c">(C)</label> <input type="radio" name="radio23" onclick="SelectAnswer(23, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span23c"><p><span>&lt;PIC&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label23d">(D)</label> <input type="radio" name="radio23" onclick="SelectAnswer(23, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span23d"><p><span>&lt;PICTURE&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink24"><span name="questionlabel">Câu</span> 24.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong HTML, đ</span><span>ể liên kết đến một thẻ neo</span><span>(anchor),
+phải sử dụng ký tự nào dưới đây trong thuộc tính HREF</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label24a">(A)</label> <input type="radio" name="radio24" onclick="SelectAnswer(24, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span24a"><p><span>@</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label24b">(B)</label> <input type="radio" name="radio24" onclick="SelectAnswer(24, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span24b"><p><span>#</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label24c">(C)</label> <input type="radio" name="radio24" onclick="SelectAnswer(24, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span24c"><p><span>&amp;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label24d">(D)</label> <input type="radio" name="radio24" onclick="SelectAnswer(24, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span24d"><p><span>*</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink25"><span name="questionlabel">Câu</span> 25.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong CSS, sử dụng thuộc tính border-collapse để</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label25a">(A)</label> <input type="radio" name="radio25" onclick="SelectAnswer(25, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span25a"><p><span> </span><span>Xác
+định đường biên là nét đứt</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label25b">(B)</label> <input type="radio" name="radio25" onclick="SelectAnswer(25, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span25b"><p><span> </span><span>Không
+có đường biên</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label25c">(C)</label> <input type="radio" name="radio25" onclick="SelectAnswer(25, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span25c"><p><span> </span><span>Xác định đường viền của table</span><span>&nbsp;có
+tách biệt ra hay không</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label25d">(D)</label> <input type="radio" name="radio25" onclick="SelectAnswer(25, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span25d"><p><span> </span><span>Cả
+3 đều đúng</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink26"><span name="questionlabel">Câu</span> 26.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Để xuống dòng trong các hộp thoại
+(ví dụ: alert, confirm), sử dụng ký hiệu nào?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label26a">(A)</label> <input type="radio" name="radio26" onclick="SelectAnswer(26, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span26a"><p><span> <span><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;b&lt;/mi&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;r&lt;/mi&gt;&lt;mo&gt;&amp;gt;&lt;/mo&gt;&lt;/mrow&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="display: inline-block; width: 3.574em;"><span style="display: inline-block; position: relative; width: 2.979em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.313em, 1002.92em, 2.384em, -999.997em); top: -2.14em; left: 0em;"><span class="mrow" id="MathJax-Span-2" style="display: inline-block;"><span class="texatom" id="MathJax-Span-3" style="display: inline-block;"><span class="mrow" id="MathJax-Span-4" style="display: inline-block;"><span class="texatom" id="MathJax-Span-5" style="display: inline-block;"><span class="mrow" id="MathJax-Span-6" style="display: inline-block;"><span class="mo" id="MathJax-Span-7" style="display: inline-block;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/003C.png" style="width: 11px; height: 9px; vertical-align: -1px; margin-right: 0.063em;"></span><span class="mi" id="MathJax-Span-8" style="display: inline-block; padding-left: 0.301em;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/0062.png" style="width: 8px; height: 11px; margin-right: 0.063em;"></span><span class="mi" id="MathJax-Span-9" style="display: inline-block;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/0072.png" style="width: 6px; height: 7px; vertical-align: 0px; margin-right: 0.003em;"></span><span class="mo" id="MathJax-Span-10" style="display: inline-block; padding-left: 0.301em;"><img src="http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/png/Main/Regular/336/003E.png?V=2.7.8" style="width: 11px; height: 9px; vertical-align: -1px; margin-right: 0.063em;"></span></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.146em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.139em; border-left: 0px solid; width: 0px; height: 0.932em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mrow class="MJX-TeXAtom-ORD"><mo>&lt;</mo><mi mathvariant="normal">b</mi><mi mathvariant="normal">r</mi><mo>&gt;</mo></mrow></mrow></math></span></span><script type="math/tex" id="MathJax-Element-1">{\rm{< br >}}</script></span></span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label26b">(B)</label> <input type="radio" name="radio26" onclick="SelectAnswer(26, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span26b"><p><span> <span><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;l&lt;/mi&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;r&lt;/mi&gt;&lt;mo&gt;&amp;gt;&lt;/mo&gt;&lt;/mrow&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-11" style="display: inline-block; width: 3.158em;"><span style="display: inline-block; position: relative; width: 2.622em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.313em, 1002.56em, 2.384em, -999.997em); top: -2.14em; left: 0em;"><span class="mrow" id="MathJax-Span-12" style="display: inline-block;"><span class="texatom" id="MathJax-Span-13" style="display: inline-block;"><span class="mrow" id="MathJax-Span-14" style="display: inline-block;"><span class="texatom" id="MathJax-Span-15" style="display: inline-block;"><span class="mrow" id="MathJax-Span-16" style="display: inline-block;"><span class="mo" id="MathJax-Span-17" style="display: inline-block;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/003C.png" style="width: 11px; height: 9px; vertical-align: -1px; margin-right: 0.063em;"></span><span class="mi" id="MathJax-Span-18" style="display: inline-block; padding-left: 0.301em;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/006C.png" style="width: 4px; height: 11px; margin-right: 0.003em;"></span><span class="mi" id="MathJax-Span-19" style="display: inline-block;"><img src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/0072.png" style="width: 6px; height: 7px; vertical-align: 0px; margin-right: 0.003em;"></span><span class="mo" id="MathJax-Span-20" style="display: inline-block; padding-left: 0.301em;"><img src="http://itest.actvn.edu.vn/mathjax/fonts/HTML-CSS/TeX/png/Main/Regular/336/003E.png?V=2.7.8" style="width: 11px; height: 9px; vertical-align: -1px; margin-right: 0.063em;"></span></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.146em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.139em; border-left: 0px solid; width: 0px; height: 0.932em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mrow class="MJX-TeXAtom-ORD"><mo>&lt;</mo><mi mathvariant="normal">l</mi><mi mathvariant="normal">r</mi><mo>&gt;</mo></mrow></mrow></math></span></span><script type="math/tex" id="MathJax-Element-2">{\rm{< lr >}}</script></span></span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label26c">(C)</label> <input type="radio" name="radio26" onclick="SelectAnswer(26, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span26c"><p><span> <span>\n</span></span></p><p>
+
+
+
+
+
+
+
+</p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label26d">(D)</label> <input type="radio" name="radio26" onclick="SelectAnswer(26, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span26d"><p><span> Cả 3 đều đúng</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink27"><span name="questionlabel">Câu</span> 27.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Chú thích trong PHP?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label27a">(A)</label> <input type="radio" name="radio27" onclick="SelectAnswer(27, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span27a"><p><span>/*…*/</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label27b">(B)</label> <input type="radio" name="radio27" onclick="SelectAnswer(27, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span27b"><p><span>&lt;comment&gt;…&lt;/comment&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label27c">(C)</label> <input type="radio" name="radio27" onclick="SelectAnswer(27, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span27c"><p><span>*\...\*</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label27d">(D)</label> <input type="radio" name="radio27" onclick="SelectAnswer(27, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span27d"><p><span>&lt;!--…--&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink28"><span name="questionlabel">Câu</span> 28.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong PHP, hàm setcookie() phải xuất hiện trước thẻ &lt;html&gt;</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label28a">(A)</label> <input type="radio" name="radio28" onclick="SelectAnswer(28, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span28a"><p><span>Đúng</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label28b">(B)</label> <input type="radio" name="radio28" onclick="SelectAnswer(28, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span28b"><p><span>Sai</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label28c">(C)</label> <input type="radio" name="radio28" onclick="SelectAnswer(28, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span28c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label28d">(D)</label> <input type="radio" name="radio28" onclick="SelectAnswer(28, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span28d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink29"><span name="questionlabel">Câu</span> 29.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, c</span><span>ách viết câu lệnh if nào sau đây là đúng?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label29a">(A)</label> <input type="radio" name="radio29" onclick="SelectAnswer(29, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span29a"><p><span>if I == 5 then</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label29b">(B)</label> <input type="radio" name="radio29" onclick="SelectAnswer(29, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span29b"><p><span>if (I ==
+5)</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label29c">(C)</label> <input type="radio" name="radio29" onclick="SelectAnswer(29, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span29c"><p><span>if I = 5</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label29d">(D)</label> <input type="radio" name="radio29" onclick="SelectAnswer(29, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span29d"><p><span>if I = 5 then</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink30"><span name="questionlabel">Câu</span> 30.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Tổ chức nào đang làm các chuẩn cho Web?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label30a">(A)</label> <input type="radio" name="radio30" onclick="SelectAnswer(30, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span30a"><p><span>Microsoft</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label30b">(B)</label> <input type="radio" name="radio30" onclick="SelectAnswer(30, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span30b"><p><span>Tổ chức World Wide
+Web Consortium(W3C)</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label30c">(C)</label> <input type="radio" name="radio30" onclick="SelectAnswer(30, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span30c"><p><span>Mozilla</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label30d">(D)</label> <input type="radio" name="radio30" onclick="SelectAnswer(30, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span30d"><p><span>Google</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink31"><span name="questionlabel">Câu</span> 31.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong JavaScript sự kiện Onload xảy ra khi
+nào?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label31a">(A)</label> <input type="radio" name="radio31" onclick="SelectAnswer(31, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span31a"><p><span>Khi bắt
+đầu chạy chương trình</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label31b">(B)</label> <input type="radio" name="radio31" onclick="SelectAnswer(31, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span31b"><p><span>Khi kết thúc một chương trình</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label31c">(C)</label> <input type="radio" name="radio31" onclick="SelectAnswer(31, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span31c"><p><span>Khi click chuột</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label31d">(D)</label> <input type="radio" name="radio31" onclick="SelectAnswer(31, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span31d"><p><span>Khi di chuyển chuột qua</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink32"><span name="questionlabel">Câu</span> 32.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>SQL là chữ viết tắt của?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label32a">(A)</label> <input type="radio" name="radio32" onclick="SelectAnswer(32, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span32a"><p><span>Structured Question Language</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label32b">(B)</label> <input type="radio" name="radio32" onclick="SelectAnswer(32, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span32b"><p><span>Structured
+Query Language</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label32c">(C)</label> <input type="radio" name="radio32" onclick="SelectAnswer(32, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span32c"><p><span>Strong Query Language</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label32d">(D)</label> <input type="radio" name="radio32" onclick="SelectAnswer(32, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span32d"><p><span>Super Question Language</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink33"><span name="questionlabel">Câu</span> 33.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Có những cách nào viết code JavaScript
+&nbsp;để chạy trong trang web?</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label33a">(A)</label> <input type="radio" name="radio33" onclick="SelectAnswer(33, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span33a"><p><span> </span><span>Viết
+trên một tệp riêng</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label33b">(B)</label> <input type="radio" name="radio33" onclick="SelectAnswer(33, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span33b"><p><span> </span><span>Viết
+chung với HTML</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label33c">(C)</label> <input type="radio" name="radio33" onclick="SelectAnswer(33, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span33c"><p><span> </span><span>Cả 2 đều đúng</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label33d">(D)</label> <input type="radio" name="radio33" onclick="SelectAnswer(33, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span33d"><p><span> </span><span>Cả
+2 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink34"><span name="questionlabel">Câu</span> 34.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Viết tắt của CSS là gì?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label34a">(A)</label> <input type="radio" name="radio34" onclick="SelectAnswer(34, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span34a"><p><span>Computer
+Style Sheets</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label34b">(B)</label> <input type="radio" name="radio34" onclick="SelectAnswer(34, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span34b"><p><span>Colorful
+Style Sheets</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label34c">(C)</label> <input type="radio" name="radio34" onclick="SelectAnswer(34, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span34c"><p><span>Creative
+Style Sheets</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label34d">(D)</label> <input type="radio" name="radio34" onclick="SelectAnswer(34, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span34d"><p><span>Cascading Style Sheets</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink35"><span name="questionlabel">Câu</span> 35.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>JavaScript là ngôn ngữ dịch mã nguồn theo kiểu nào?</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label35a">(A)</label> <input type="radio" name="radio35" onclick="SelectAnswer(35, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span35a"><p><span> </span><span>Thông dịch</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label35b">(B)</label> <input type="radio" name="radio35" onclick="SelectAnswer(35, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span35b"><p><span> </span><span>Biên
+dịch</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label35c">(C)</label> <input type="radio" name="radio35" onclick="SelectAnswer(35, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span35c"><p><span> </span><span>Không
+có dạng nào ở trên</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label35d">(D)</label> <input type="radio" name="radio35" onclick="SelectAnswer(35, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span35d"><p><span> </span><span>Cả
+hai dạng biên dịch và thông dịch</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink36"><span name="questionlabel">Câu</span> 36.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Hàm </span><span>filter_var($email, FILTER_VALIDATE_EMAIL)</span><span> trong PHP </span><span>sử dụng để làm gì?</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label36a">(A)</label> <input type="radio" name="radio36" onclick="SelectAnswer(36, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span36a"><p><span> </span><span>Kiểm
+tra email có tồn tại không</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label36b">(B)</label> <input type="radio" name="radio36" onclick="SelectAnswer(36, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span36b"><p><span> </span><span>Kiểm
+tra email có trong CSDL không</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label36c">(C)</label> <input type="radio" name="radio36" onclick="SelectAnswer(36, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span36c"><p><span> </span><span>Kiểm tra email có đúng định dạng không</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label36d">(D)</label> <input type="radio" name="radio36" onclick="SelectAnswer(36, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span36d"><p><span> </span><span>Cả
+3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink37"><span name="questionlabel">Câu</span> 37.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, t</span><span>huộc tính </span><span>document.images</span><span> sử dụng để làm gì?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label37a">(A)</label> <input type="radio" name="radio37" onclick="SelectAnswer(37, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span37a"><p><span>Trả về mọi
+phần tử &lt;img&gt; trong trang web</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label37b">(B)</label> <input type="radio" name="radio37" onclick="SelectAnswer(37, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span37b"><p><span>Trả về mọi file ảnh</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label37c">(C)</label> <input type="radio" name="radio37" onclick="SelectAnswer(37, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span37c"><p><span>Trả về ảnh nền của trang web</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label37d">(D)</label> <input type="radio" name="radio37" onclick="SelectAnswer(37, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span37d"><p><span>Trả về ảnh đầu tiên trong trang web</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink38"><span name="questionlabel">Câu</span> 38.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Đâu là phần tử HTML tạo ra một danh sách đầu mục bởi dấu chấm?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label38a">(A)</label> <input type="radio" name="radio38" onclick="SelectAnswer(38, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span38a"><p><span>&lt;dl&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label38b">(B)</label> <input type="radio" name="radio38" onclick="SelectAnswer(38, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span38b"><p><span>&lt;ol&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label38c">(C)</label> <input type="radio" name="radio38" onclick="SelectAnswer(38, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span38c"><p><span>&lt;ul&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label38d">(D)</label> <input type="radio" name="radio38" onclick="SelectAnswer(38, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span38d"><p><span>&lt;list&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink39"><span name="questionlabel">Câu</span> 39.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong CSS, t</span><span>huộc tính z-index&nbsp;</span><span>sử dụng để </span><span>t</span><span>hiết lập thứ tự xếp chồng nhau của một thành
+phần đúng hay sai?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label39a">(A)</label> <input type="radio" name="radio39" onclick="SelectAnswer(39, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span39a"><p><span>Sai</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label39b">(B)</label> <input type="radio" name="radio39" onclick="SelectAnswer(39, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span39b"><p><span>Đúng</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label39c">(C)</label> <input type="radio" name="radio39" onclick="SelectAnswer(39, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span39c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label39d">(D)</label> <input type="radio" name="radio39" onclick="SelectAnswer(39, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span39d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink40"><span name="questionlabel">Câu</span> 40.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Thứ tự mệnh đề trong SQL được sắp xếp theo độ
+giảm dần thứ tự ưu tiên là phát biểu nào sau đây?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label40a">(A)</label> <input type="radio" name="radio40" onclick="SelectAnswer(40, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span40a"><p><span>FROM,
+WHERE, GROUP BY, HAVING, SELECT, ORDER BY</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label40b">(B)</label> <input type="radio" name="radio40" onclick="SelectAnswer(40, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span40b"><p><span>FROM, SELECT, GROUP BY, HAVING, WHERE, ORDER BY</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label40c">(C)</label> <input type="radio" name="radio40" onclick="SelectAnswer(40, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span40c"><p><span>SELECT , FROM, WHERE, GROUP BY, HAVING, ORDER BY</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label40d">(D)</label> <input type="radio" name="radio40" onclick="SelectAnswer(40, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span40d"><p><span>SELECT , WHERE, FROM, GROUP BY, HAVING, ORDER BY</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink41"><span name="questionlabel">Câu</span> 41.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Thẻ HTML nào tạo ra một checkbox?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label41a">(A)</label> <input type="radio" name="radio41" onclick="SelectAnswer(41, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span41a"><p><span>&lt;check&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label41b">(B)</label> <input type="radio" name="radio41" onclick="SelectAnswer(41, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span41b"><p><span>&lt;input type=”check”&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label41c">(C)</label> <input type="radio" name="radio41" onclick="SelectAnswer(41, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span41c"><p><span>&lt;checkbox&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label41d">(D)</label> <input type="radio" name="radio41" onclick="SelectAnswer(41, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span41d"><p><span>&lt;input type=”checkbox”&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink42"><span name="questionlabel">Câu</span> 42.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Kết quả thực hiện đoạn mã sau:</span></p>
+
+<p><span>&lt;?</span><span>php</span></p>
+
+<p><span>echo (int)
+"1235Jason"; </span></p>
+
+<p><span>?&gt;</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label42a">(A)</label> <input type="radio" name="radio42" onclick="SelectAnswer(42, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span42a"><p><span>0</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label42b">(B)</label> <input type="radio" name="radio42" onclick="SelectAnswer(42, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span42b"><p><span>1235</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label42c">(C)</label> <input type="radio" name="radio42" onclick="SelectAnswer(42, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span42c"><p><span>1235Jason</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label42d">(D)</label> <input type="radio" name="radio42" onclick="SelectAnswer(42, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span42d"><p><span>Có lỗi xảy ra</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink43"><span name="questionlabel">Câu</span> 43.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, g</span><span>iá trị trả về khi thực hiện câu lệnh </span><span>Math.min(</span><span><span>0</span></span><span>,&nbsp;</span><span><span>150</span></span><span>,&nbsp;</span><span><span>30</span></span><span>,&nbsp;</span><span><span>20</span></span><span>,&nbsp;</span><span><span>-8</span></span><span>,&nbsp;</span><span><span>-200</span></span><span>)</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label43a">(A)</label> <input type="radio" name="radio43" onclick="SelectAnswer(43, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span43a"><p><span> </span><span>0</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label43b">(B)</label> <input type="radio" name="radio43" onclick="SelectAnswer(43, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span43b"><p><span> </span><span>-0</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label43c">(C)</label> <input type="radio" name="radio43" onclick="SelectAnswer(43, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span43c"><p><span> </span><span>150</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label43d">(D)</label> <input type="radio" name="radio43" onclick="SelectAnswer(43, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span43d"><p><span> </span><span>Cả 3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink44"><span name="questionlabel">Câu</span> 44.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>PHP cho phép làm việc với nhiều hệ quản trị CSDL khác nhau?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label44a">(A)</label> <input type="radio" name="radio44" onclick="SelectAnswer(44, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span44a"><p><span>Đúng</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label44b">(B)</label> <input type="radio" name="radio44" onclick="SelectAnswer(44, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span44b"><p><span>Sai</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label44c">(C)</label> <input type="radio" name="radio44" onclick="SelectAnswer(44, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span44c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label44d">(D)</label> <input type="radio" name="radio44" onclick="SelectAnswer(44, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span44d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink45"><span name="questionlabel">Câu</span> 45.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, khi xây dựng biểu thức chính quy, ký tự nào đại diện cho
+các ký tự?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label45a">(A)</label> <input type="radio" name="radio45" onclick="SelectAnswer(45, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span45a"><p><span>Không có</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label45b">(B)</label> <input type="radio" name="radio45" onclick="SelectAnswer(45, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span45b"><p><span>\d</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label45c">(C)</label> <input type="radio" name="radio45" onclick="SelectAnswer(45, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span45c"><p><span>\w</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label45d">(D)</label> <input type="radio" name="radio45" onclick="SelectAnswer(45, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span45d"><p><span>\c</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink46"><span name="questionlabel">Câu</span> 46.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Chọn phần tử HTML được dùng nhấn mạnh nội dung văn bản?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label46a">(A)</label> <input type="radio" name="radio46" onclick="SelectAnswer(46, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span46a"><p><span>&lt;b&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label46b">(B)</label> <input type="radio" name="radio46" onclick="SelectAnswer(46, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span46b"><p><span>&lt;italic&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label46c">(C)</label> <input type="radio" name="radio46" onclick="SelectAnswer(46, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span46c"><p><span>&lt;em&gt;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label46d">(D)</label> <input type="radio" name="radio46" onclick="SelectAnswer(46, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span46d"><p><span>&lt;i&gt;</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink47"><span name="questionlabel">Câu</span> 47.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Chọn phát biểu đúng về đoạn mã sau:</span></p>
+
+<p><span>$sql = "INSERT INTO
+MyGuests (firstname, lastname, email)<br>
+VALUES ('John', 'Doe', 'john@example.com');";<br>
+$sql .= "INSERT INTO MyGuests (firstname, lastname, email)<br>
+VALUES ('Mary', 'Moe', 'mary@example.com');";<br>
+<br>
+if ($conn-&gt;multi_query($sql) === TRUE) {<br>
+&nbsp;&nbsp;&nbsp; echo "New records created successfully";<br>
+} else {<br>
+&nbsp;&nbsp;&nbsp; echo "Error: " . $sql . "&lt;br&gt;" .
+$conn-&gt;error;<br>
+}</span></p>
+
+</td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label47a">(A)</label> <input type="radio" name="radio47" onclick="SelectAnswer(47, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span47a"><p><span> </span><span>Lỗi
+cú pháp</span></p>
+
+</span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label47b">(B)</label> <input type="radio" name="radio47" onclick="SelectAnswer(47, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span47b"><p><span> </span><span>Thêm nhiều bản ghi vào bảng</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label47c">(C)</label> <input type="radio" name="radio47" onclick="SelectAnswer(47, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span47c"><p><span> </span><span>Không
+lỗi cú pháp nhưng không thể thêm được bản ghi mới</span></p>
+
+</span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label47d">(D)</label> <input type="radio" name="radio47" onclick="SelectAnswer(47, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span47d"><p><span> </span><span>Cả
+3 đều sai</span></p></span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink48"><span name="questionlabel">Câu</span> 48.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong Javascript, việc thay đổi Cookie tương tự như tạo, và Cookie sẽ bị
+ghi đè đúng hay sai?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label48a">(A)</label> <input type="radio" name="radio48" onclick="SelectAnswer(48, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span48a"><p><span>Đúng</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label48b">(B)</label> <input type="radio" name="radio48" onclick="SelectAnswer(48, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span48b"><p><span>Sai</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label48c">(C)</label> <input type="radio" name="radio48" onclick="SelectAnswer(48, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span48c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label48d">(D)</label> <input type="radio" name="radio48" onclick="SelectAnswer(48, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span48d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink49"><span name="questionlabel">Câu</span> 49.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Chọn cách sử dụng CSS để danh sách không thứ
+tự được đánh dấu bằng ô vuông đầu mỗi mục</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label49a">(A)</label> <input type="radio" name="radio49" onclick="SelectAnswer(49, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span49a"><p><span>list: square;</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label49b">(B)</label> <input type="radio" name="radio49" onclick="SelectAnswer(49, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span49b"><p><span>list-type:
+square;</span></p></span></td></tr><tr style="display:"><td style="vertical-align:top;text-align:center;"><label id="label49c">(C)</label> <input type="radio" name="radio49" onclick="SelectAnswer(49, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span49c"><p><span>list-style-type: square;</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label49d">(D)</label> <input type="radio" name="radio49" onclick="SelectAnswer(49, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span49d">-</span></td></tr><tr><td style="vertical-align:top;" width="65"><span class="questionlabel" id="qlink50"><span name="questionlabel">Câu</span> 50.</span><input type="hidden" name="question_group" value="rf_19"></td><td style="vertical-align:top;font-weight:bold;"><p><span>Trong PHP, đ</span><span>ể xóa Cookie, sử dụng hàm </span><span>setcookie() </span><span>với thời hạn deadline là một thời điểm trong quá khứ?</span></p></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label50a">(A)</label> <input type="radio" name="radio50" onclick="SelectAnswer(50, &#39;A&#39;);"></td><td style="vertical-align:top;"><span id="span50a"><p><span>Đúng</span></p></span></td></tr><tr><td style="vertical-align:top;text-align:center;"><label id="label50b">(B)</label> <input type="radio" name="radio50" onclick="SelectAnswer(50, &#39;B&#39;);"></td><td style="vertical-align:top;"><span id="span50b"><p><span>Sai</span></p></span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label50c">(C)</label> <input type="radio" name="radio50" onclick="SelectAnswer(50, &#39;C&#39;);"></td><td style="vertical-align:top;"><span id="span50c">-</span></td></tr><tr style="display:none"><td style="vertical-align:top;text-align:center;"><label id="label50d">(D)</label> <input type="radio" name="radio50" onclick="SelectAnswer(50, &#39;D&#39;);"></td><td style="vertical-align:top;"><span id="span50d">-</span></td></tr></tbody></table></td></tr></tbody></table><br></div></div><p style="color: rgb(92, 92, 92); padding-top: 30px; padding-bottom: 10px; display: none;" id="pdirection"><b>Khi bạn đã sẵn sàng, hãy bấm vào nút "Bắt đầu làm bài" dưới đây.</b><br><br></p><button type="button" id="btnBatdau" class="btn btn-primary" onclick="javascript:StartDoingTheTest();" style="display: none;">Bắt đầu làm bài</button></div><div id="testSubmisionConfirmation" class="confirm-dialog" style="display:none;"><span><label id="testsubmisionnotice">Sau khi đã nộp bài, bạn sẽ không được thay đổi các phương án trả lời nữa. <br>  Bạn chắc chắn nộp bài?</label><br><button onclick="testSubmisionConfirmed();" class="btn btn-primary" id="confirmyes">&nbsp;&nbsp;&nbsp;Có&nbsp;&nbsp;&nbsp;</button><button onclick="testSubmisionCanceled();" class="btn btn-primary" id="confirmno">&nbsp;&nbsp;Không&nbsp;&nbsp;</button></span></div><div id="testPartSelectionConfirmation" class="confirm-dialog" style="display:none;"><span><label name="testpartselectionnotice1">Bạn đã lựa chọn phần thi</label><br><label name="testPartSelectedTitle" style="color:red;"></label><br><label name="testpartselectionnotice3">trong số các phần thi tự chọn (chọn một trong nhiều)</label><br><label name="testPartSelectiveTitles" style="color:green;"></label><br><label name="testpartselectionnotice2">Nếu còn do dự, bạn có thể thay đổi lựa chọn của mình bằng cách kích chọn phần thi khác.<br>Nếu không, hãy bấm nút &lt;Vào ngay&gt; dưới đây để vào làm phần thi đã chọn. </label><br><button onclick="testPartSelectionConfirmed();" class="btn btn-primary" name="tpsconfirmyes">Vào ngay</button></span></div><div id="UAS" class="answersheet"><font color="#999933"><br><span id="answerspanel_title">Trả lời<br> của bạn</span><br>------</font><br><div id="question_group_1" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink1" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">1.</a><span id="a1_precedence" class="tester-answer-precedence"></span><input type="text" id="a1" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_2" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink2" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">2.</a><span id="a2_precedence" class="tester-answer-precedence"></span><input type="text" id="a2" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_3" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink3" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">3.</a><span id="a3_precedence" class="tester-answer-precedence"></span><input type="text" id="a3" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_4" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink4" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">4.</a><span id="a4_precedence" class="tester-answer-precedence"></span><input type="text" id="a4" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_5" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink5" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">5.</a><span id="a5_precedence" class="tester-answer-precedence"></span><input type="text" id="a5" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_6" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink6" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">6.</a><span id="a6_precedence" class="tester-answer-precedence"></span><input type="text" id="a6" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_7" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink7" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">7.</a><span id="a7_precedence" class="tester-answer-precedence"></span><input type="text" id="a7" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_8" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink8" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">8.</a><span id="a8_precedence" class="tester-answer-precedence"></span><input type="text" id="a8" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_9" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink9" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">9.</a><span id="a9_precedence" class="tester-answer-precedence"></span><input type="text" id="a9" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_10" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink10" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">10.</a><span id="a10_precedence" class="tester-answer-precedence"></span><input type="text" id="a10" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_11" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink11" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">11.</a><span id="a11_precedence" class="tester-answer-precedence"></span><input type="text" id="a11" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_12" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink12" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">12.</a><span id="a12_precedence" class="tester-answer-precedence"></span><input type="text" id="a12" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_13" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink13" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">13.</a><span id="a13_precedence" class="tester-answer-precedence"></span><input type="text" id="a13" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_14" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink14" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">14.</a><span id="a14_precedence" class="tester-answer-precedence"></span><input type="text" id="a14" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_15" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink15" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">15.</a><span id="a15_precedence" class="tester-answer-precedence"></span><input type="text" id="a15" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_16" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink16" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">16.</a><span id="a16_precedence" class="tester-answer-precedence"></span><input type="text" id="a16" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_17" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink17" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">17.</a><span id="a17_precedence" class="tester-answer-precedence"></span><input type="text" id="a17" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_18" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink18" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">18.</a><span id="a18_precedence" class="tester-answer-precedence"></span><input type="text" id="a18" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_19" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink19" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">19.</a><span id="a19_precedence" class="tester-answer-precedence"></span><input type="text" id="a19" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_20" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink20" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">20.</a><span id="a20_precedence" class="tester-answer-precedence"></span><input type="text" id="a20" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_21" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink21" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">21.</a><span id="a21_precedence" class="tester-answer-precedence"></span><input type="text" id="a21" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_22" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink22" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">22.</a><span id="a22_precedence" class="tester-answer-precedence"></span><input type="text" id="a22" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_23" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink23" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">23.</a><span id="a23_precedence" class="tester-answer-precedence"></span><input type="text" id="a23" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_24" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink24" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">24.</a><span id="a24_precedence" class="tester-answer-precedence"></span><input type="text" id="a24" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_25" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink25" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">25.</a><span id="a25_precedence" class="tester-answer-precedence"></span><input type="text" id="a25" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_26" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink26" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">26.</a><span id="a26_precedence" class="tester-answer-precedence"></span><input type="text" id="a26" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_27" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink27" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">27.</a><span id="a27_precedence" class="tester-answer-precedence"></span><input type="text" id="a27" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_28" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink28" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">28.</a><span id="a28_precedence" class="tester-answer-precedence"></span><input type="text" id="a28" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_29" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink29" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">29.</a><span id="a29_precedence" class="tester-answer-precedence"></span><input type="text" id="a29" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_30" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink30" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">30.</a><span id="a30_precedence" class="tester-answer-precedence"></span><input type="text" id="a30" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_31" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink31" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">31.</a><span id="a31_precedence" class="tester-answer-precedence"></span><input type="text" id="a31" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_32" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink32" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">32.</a><span id="a32_precedence" class="tester-answer-precedence"></span><input type="text" id="a32" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_33" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink33" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">33.</a><span id="a33_precedence" class="tester-answer-precedence"></span><input type="text" id="a33" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_34" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink34" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">34.</a><span id="a34_precedence" class="tester-answer-precedence"></span><input type="text" id="a34" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_35" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink35" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">35.</a><span id="a35_precedence" class="tester-answer-precedence"></span><input type="text" id="a35" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_36" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink36" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">36.</a><span id="a36_precedence" class="tester-answer-precedence"></span><input type="text" id="a36" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_37" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink37" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">37.</a><span id="a37_precedence" class="tester-answer-precedence"></span><input type="text" id="a37" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_38" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink38" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">38.</a><span id="a38_precedence" class="tester-answer-precedence"></span><input type="text" id="a38" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_39" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink39" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">39.</a><span id="a39_precedence" class="tester-answer-precedence"></span><input type="text" id="a39" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_40" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink40" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">40.</a><span id="a40_precedence" class="tester-answer-precedence"></span><input type="text" id="a40" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_41" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink41" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">41.</a><span id="a41_precedence" class="tester-answer-precedence"></span><input type="text" id="a41" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_42" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink42" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">42.</a><span id="a42_precedence" class="tester-answer-precedence"></span><input type="text" id="a42" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_43" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink43" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">43.</a><span id="a43_precedence" class="tester-answer-precedence"></span><input type="text" id="a43" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_44" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink44" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">44.</a><span id="a44_precedence" class="tester-answer-precedence"></span><input type="text" id="a44" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_45" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink45" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">45.</a><span id="a45_precedence" class="tester-answer-precedence"></span><input type="text" id="a45" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_46" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink46" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">46.</a><span id="a46_precedence" class="tester-answer-precedence"></span><input type="text" id="a46" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_47" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink47" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">47.</a><span id="a47_precedence" class="tester-answer-precedence"></span><input type="text" id="a47" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_48" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink48" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">48.</a><span id="a48_precedence" class="tester-answer-precedence"></span><input type="text" id="a48" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_49" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink49" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">49.</a><span id="a49_precedence" class="tester-answer-precedence"></span><input type="text" id="a49" value="-" size="1" class="tester-answer" readonly="readonly"></div><div id="question_group_50" style=""><a href="http://itest.actvn.edu.vn/Sites3/Std_DoTest2.aspx?pbt_id=479#qlink50" style="text-decoration:none;" name="answerspanel_qlink" title="Kích chuột để chuyển đến câu này">50.</a><span id="a50_precedence" class="tester-answer-precedence"></span><input type="text" id="a50" value="-" size="1" class="tester-answer" readonly="readonly"></div><input type="hidden" id="NOAnswers" value="50"><br>&nbsp;</div></div><script type="text/javascript"></script>
+<script type="text/javascript" src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/stddotest2_vi.js.tải xuống"></script>
+<script type="text/javascript">
+	    document.getElementById("partSelector").innerHTML = "<option value=19>L&#7920;A CH&#7884;N PHƯƠNG ÁN ĐÚNG</option>";
+	    document.getElementById("partButtons").innerHTML = "<button name='partButtonAct' type='button' class='btn btn-xs btn-info' onclick='partButtonAct(this,0);'>L&#7921;a ch&#7885;n phương án đúng</button>";
+	
+		var current_sec = 0;
+		var current_part = 0;
+		var version = navigator.appVersion;
+		var currentVideoWindow = null;
+		var mywindow;
+		var unRepliedRequests = 0;
+        var currentPart = "";
+        var currPartButton = null;
+        var v_testPartSelectionConfirmed = false;
+        var takenIndices = "";
+    var currentIndex = "";
+    var myWorker;
+	
+	function showTheTime() {
+		let mnt = parseInt(document.getElementById("minutesLeft").value);
+		let snd = parseInt(document.getElementById("secondsLeft").value);
+		if (snd == 1) {
+			snd = 60;
+			mnt = mnt - 1;
+			if (mnt < 0) {
+				document.getElementById("showTime").value = "00:00";
+				Ketthuc(); return;
+			} else {
+				document.getElementById("secondsLeft").value = snd;
+				document.getElementById("minutesLeft").value = mnt;
+			}
+		} else {
+			snd = snd - 1;
+			document.getElementById("secondsLeft").value = snd;
+			document.getElementById("minutesLeft").value = mnt;
+		}
+		document.getElementById("showTime").value =  document.getElementById("minutesLeft").value + ":";
+		if (snd <= 9) document.getElementById("showTime").value += "0";
+		document.getElementById("showTime").value += document.getElementById("secondsLeft").value;
+		if (snd == 1 && mnt > 0) LuuKetqua(mnt);
+		setTimeout("showTheTime();", 1000);
+	}		
+	function startTime(time_left) {
+		let tl = parseInt(time_left);
+		document.getElementById("minutesLeft").value = (tl - 1);
+		document.getElementById("secondsLeft").value = "60";
+		document.getElementById("showTime").value =  document.getElementById("minutesLeft").value + ":" + document.getElementById("secondsLeft").value;
+		//showTheTime();
+        if (window.Worker) {
+            myWorker = new Worker("/js/timerworker.js");
+            myWorker.postMessage([document.getElementById("minutesLeft").value, document.getElementById("secondsLeft").value]);
+            myWorker.onmessage = function (e) {
+                document.getElementById("minutesLeft").value = e.data[0];
+                document.getElementById("secondsLeft").value = e.data[1];
+                let mnt = parseInt(document.getElementById("minutesLeft").value);
+                let snd = parseInt(document.getElementById("secondsLeft").value);
+                if (mnt <= 0 && snd == 0) {
+                    myWorker.terminate();
+                    document.getElementById("showTime").value = "00:00";
+                    Ketthuc(); return;
+                } else {
+                    document.getElementById("showTime").value =  document.getElementById("minutesLeft").value + ":";
+		            if (snd <= 9) document.getElementById("showTime").value += "0";
+		            document.getElementById("showTime").value += document.getElementById("secondsLeft").value;
+		            if (snd == 1 && mnt > 0) LuuKetqua(mnt);
+                }
+            };
+        } else {
+            setTimeout("showTheTime();", 1000);
+        }
+	}		
+	function LuuKetqua(timeLeft) {
+	    unRepliedRequests++;
+	    if (unRepliedRequests > 1) document.getElementById("hotnote").style.display = "";
+	    else document.getElementById("hotnote").style.display = "none";
+		let tanswers = "";
+		NOA = parseInt(document.getElementById("NOAnswers").value);
+		for (let i = 1; i <= NOA; i++) {
+			tanswers += document.getElementById("a"+i).value;
+		}
+		let paras = "pbt_id=" + document.getElementById("pbt_id").value +
+		            "&time_left=" + timeLeft.toString() +
+		            "&answerOfTester=" + tanswers +
+		            "&partid=" + currentPart.substring(3, currentPart.length) +
+            "&parttimeleft=0" +
+            "&ti=" + takenIndices;
+		            
+		let xmlHttp = getXmlHttp();
+		xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.responseText.trim() == "MATCHING_TEST") { document.location.href = "Std_MatchingTest.aspx?pbt_id=" + document.getElementById("pbt_id").value; }
+                else if (xmlHttp.responseText.trim() == "OK") { unRepliedRequests = 0; document.getElementById("hotnote").style.display = "none"; } 
+                else if (xmlHttp.responseText.trim() == "STO") { document.location.href = "sto.aspx"; }
+                else if (xmlHttp.responseText.trim() == "MALREQUEST") { document.location.href = "StudentPortal.aspx"; }
+                else if (xmlHttp.responseText.trim() == "TEST-NOT-FOUND") { document.location.href = "StudentPortal.aspx"; }
+                else if (xmlHttp.responseText.trim() == "FRAUDULENCE") { document.location.href = "StudentPortal.aspx"; }
+                else {
+                    if (unRepliedRequests > 1) document.getElementById("hotnote").style.display = "";
+	                else document.getElementById("hotnote").style.display = "none";
+	            }
+	        }
+	    };
+	    xmlHttp.open("POST", "SaveAnswersOfExamee.aspx", true);
+	    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xmlHttp.send(paras);
+	}
+    function Ketthuc() {
+        let wait4save = 0;
+		if (currentVideoWindow) { 
+			currentVideoWindow.document.location.href = "end-video.aspx";
+            currentVideoWindow = null;
+            wait4save += 50;
+		}
+        if (nocTypingAnswer > 0) {
+            textAnswer(typingQsn, typingQid, typingTqid, typingPbtqid);
+            wait4save += 100;
+        }
+        if (currentVideoAnswerFrm) {
+            if (!currentVideoAnswerFrmCleared) {
+                currentVideoAnswerFrm.contentWindow.document.getElementById('stop').click();
+                wait4save += 3200;
+                currentVideoAnswerFrmCleared = true;
+            }
+            currentVideoAnswerFrm = null;
+        }
+        if (wait4save > 0) setTimeout(function () { LuuKetqua(0); }, wait4save);
+        else LuuKetqua(0);
+	}
+	function Napbai() {
+	    document.getElementById("testPartSelectionConfirmation").style.display = "none";
+	    document.getElementById("testSubmisionConfirmation").style.display = "";
+	}
+	function testSubmisionConfirmed() { Ketthuc();}
+	function testSubmisionCanceled() { document.getElementById("testSubmisionConfirmation").style.display = "none";	}
+	function selectPart(partid) {		
+        if (currentPart != "") {
+            document.getElementById(currentPart).style.display = "none";
+        }
+		currentPart = partid;
+		document.getElementById(currentPart).style.display = "";
+		document.getElementById(currentPart+"_title").className = "taken_part";	
+		question_groups = document.getElementsByName("question_group");
+		for (i = 1; i <= question_groups.length; i++)
+		    if (question_groups[i-1].value == currentPart)
+		        document.getElementById("question_group_"+i).style.display = "";
+		    else document.getElementById("question_group_"+i).style.display = "none";
+		document.getElementById("idPreview").scrollTop = 0;
+        document.getElementById("UAS").scrollTop = 0;
+
+        qgroupTextSticky();
+
+        let media = document.getElementById(currentPart+"_media");
+		if (media && media.contentWindow.PlayMedia) {
+		    media.contentWindow.PlayMedia();
+		}
+        if (!partResuming) LuuKetqua(parseInt(document.getElementById("minutesLeft").value));
+	}
+	function testPartSelectionConfirmed() {
+	    document.getElementById("testPartSelectionConfirmation").style.display = "none";
+	    v_testPartSelectionConfirmed = true;
+	    let tmppba = document.getElementsByName("partButtonAct");
+	    let rf_selective_h = document.getElementsByName("rf_selective_h");
+	    for (let i = 0; i < tmppba.length; i++)
+            if (rf_selective_h[i].value == "1" && tmppba[i] != currPartButton) tmppba[i].style.display = "none";
+        //
+        let btnsn = currentBtnsn;
+         if (currentIndex != "" && currentIndex != btnsn.toString()) {
+            if (takenIndices.indexOf(","+currentIndex+",") < 0) {
+                if (takenIndices == "") takenIndices += ",";
+                takenIndices += currentIndex;
+                takenIndices += ",";
+            }
+        }
+        currentIndex = btnsn.toString();
+        document.getElementById("partSelector").selectedIndex = btnsn;
+        selectPart("rf_" + document.getElementById("partSelector").value);
+    }
+    var isVideoPlaying = null;
+    var currentBtnsn = 0;
+    function partButtonAct(self, btnsn) {
+        if (currPartButton == self) return;
+        if (isVideoPlaying != null) { return; }
+        if (currPartButton != null) {
+            currPartButton.style.borderBottom = "0px solid #ff0000";
+            currPartButton.classList.remove("btn-info", "btn-success");
+            currPartButton.classList.add("btn-link");
+        }
+        currPartButton = self;
+        currentBtnsn = btnsn;
+        currPartButton.style.borderBottom = "3px solid #ff0000";
+        if (currentVideoWindow) {
+            currentVideoWindow.document.location.href = "end-video.aspx";
+            currentVideoWindow = null;
+        }
+        if (currentPart != "") {
+            document.getElementById(currentPart).style.display = "none";
+            //currentPart = "";
+        }
+	    let rf_selective_h = document.getElementsByName("rf_selective_h");
+	    if (rf_selective_h[parseInt(btnsn)].value == "1") {
+	        if (!v_testPartSelectionConfirmed) {
+	            document.getElementById("testPartSelectionConfirmation").style.display = "";
+	            document.getElementById("testSubmisionConfirmation").style.display = "none";
+	            let tpst = document.getElementsByName("testPartSelectedTitle")[0];
+                tpst.innerHTML = self.innerHTML;
+                //
+                let testPartSelectiveTitles = document.getElementsByName("testPartSelectiveTitles")[0];
+                testPartSelectiveTitles.innerHTML = "";
+                let tmppbazzz = document.getElementsByName("partButtonAct");
+	            let rf_selective_hzzz = document.getElementsByName("rf_selective_h");
+                for (let i = 0; i < tmppbazzz.length; i++) {
+                    if (rf_selective_hzzz[i].value == "1") {
+                        if (testPartSelectiveTitles.innerHTML != "") testPartSelectiveTitles.innerHTML += ", ";
+                        testPartSelectiveTitles.innerHTML += tmppbazzz[i].innerHTML;
+                    }
+                }
+                return;
+            }
+        }
+        if (currentPart != "") {
+            document.getElementById(currentPart).style.display = "none";
+            currentPart = "";
+        }
+        document.getElementById("testPartSelectionConfirmation").style.display = "none";
+        if (currentIndex != "" && currentIndex != btnsn.toString()) {
+            if (takenIndices.indexOf(","+currentIndex+",") < 0) {
+                if (takenIndices == "") takenIndices += ",";
+                takenIndices += currentIndex;
+                takenIndices += ",";
+            }
+        }
+        currentIndex = btnsn.toString();
+        document.getElementById("partSelector").selectedIndex = btnsn;
+        selectPart("rf_" + document.getElementById("partSelector").value);
+	}
+	//Thiet lap do cao cac khung
+	var mainDivHeight = window.screen.height - 190;
+	document.getElementById("idPreview").style.height = mainDivHeight+"px";
+	
+	
+	function clickIE() {if (document.all) {return false;}}
+    function clickNS(e) {
+	    if (document.layers||(document.getElementById&&!document.all)) 	{
+		    if (e.which==2||e.which==3) {return false;}
+	    }
+    }
+    if (document.layers) {
+	    document.captureEvents(Event.MOUSEDOWN); 
+	    document.onmousedown=clickNS;
+    } else {
+	    document.onmouseup=clickNS;
+	    document.oncontextmenu=clickIE;
+    }
+    document.oncontextmenu = function () { return false; };
+
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {  history.go(1);  };
+    window.alert = function (txt) { console.log("bad alert: " + txt);  return true;  };
+    window.confirm = function (txt) { console.log("bad confirm: " + txt); return true; };
+    window.prompt = function (txt, dtxt) { console.log("bad prompt: " + txt + dtxt); return true; }
+
+
+    function qgroupTextSticky() {
+        let WINDOW_HEIGHT = mainDivHeight - 20;
+        let stickydiv = document.querySelectorAll("div.qgroup_text_sticky");
+        for (let i = 0; i < stickydiv.length; i++) {
+            if (stickydiv[i].getBoundingClientRect().height > WINDOW_HEIGHT)
+                stickydiv[i].style.height = WINDOW_HEIGHT + "px";
+        }
+    }
+   
+    function SaveOpenedStatus() {
+        let paras = "pbt_id=" + document.getElementById("pbt_id").value;
+        let xmlHttp = getXmlHttp();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.responseText.trim() == "OK") {
+                    unRepliedRequests = 0;
+                    if (!partResuming) {
+                        currPartButton = document.getElementsByName("partButtonAct")[0];
+                        currPartButton.style.borderBottom = "3px solid #ff0000";
+                        currentIndex = "0";
+                        // vao phan thi thu nhat
+                        partResuming = true;
+                        selectPart("rf_" + document.getElementById("partSelector").value);
+                        partResuming = false;
+                        //Bat dau tinh thoi gian
+                        startTime(45);
+                    } else {
+                        let test_part_id = "";
+                        let pba = 0;
+                        let tIndices = takenIndices.split(",");
+                        for (let ti = 1; ti < tIndices.length - 1; ti++) {
+                            pba = parseInt(tIndices[ti]);
+                            let tmpbtn = document.getElementsByName("partButtonAct")[pba];
+                            tmpbtn.style.borderBottom = "0px solid #555555";
+                            tmpbtn.classList.remove("btn-info", "btn-success");
+                            tmpbtn.classList.add("btn-link");
+                            document.getElementById("partSelector").selectedIndex = pba;
+                            if (document.getElementById("rf_" + document.getElementById("partSelector").value +"_media")) {
+                                document.getElementById("rf_" + document.getElementById("partSelector").value + "_media").contentWindow.document.location.href = "end-video.aspx";
+                            }          
+                        }
+                        pba = 0;
+                        document.getElementById("partSelector").selectedIndex = 0;
+                        while (test_part_id != document.getElementById("partSelector").value) {
+                            pba++;
+                            document.getElementById("partSelector").selectedIndex = pba;
+                        }
+                        currPartButton = document.getElementsByName("partButtonAct")[pba];
+                        currPartButton.style.borderBottom = "3px solid #ff0000";
+                        currentIndex = pba.toString();
+                        if (document.getElementsByName("rf_selective_h")[pba].value == "1") testPartSelectionConfirmed();
+                        setTimeout(function(){
+                            selectPart("rf_" + document.getElementById("partSelector").value);
+                            unRepliedRequests = 0;
+                            partResuming = false;
+                            //Bat dau tinh thoi gian
+                            startTime(45);
+                        }, 5000);
+                    }                    
+                }
+                else if (xmlHttp.responseText.trim() == "STO") { document.location.href = "sto.aspx"; }
+                else if (xmlHttp.responseText.trim() == "MALREQUEST") { document.location.href = "StudentPortal.aspx"; }
+                else if (xmlHttp.responseText.trim() == "TEST-NOT-FOUND") { document.location.href = "StudentPortal.aspx"; }
+                else { setTimeout(function () { SaveOpenedStatus() }, 5000); }
+            }
+        };
+        xmlHttp.open("POST", "SaveOpenedStatus.aspx", true);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlHttp.send(paras);
+    }
+    function StartDoingTheTest() {
+		//an nut bat dau thi va cac huong dan
+		document.getElementById("btnBatdau").style.display = "none";
+		document.getElementById("pdirection").style.display = "none";
+		document.getElementById("pdirection2").style.display = "none";		
+		document.getElementById("partButtons").style.display = "";
+		document.getElementById("btnSubmitTest").style.display = "";
+		//an cac tieu de khoi, phan thi
+		for (let i = 1; i <= sec_c; i++) {//cac khoi
+			document.getElementById("rfg_"+sec_part[i][0]+"_title").style.display = "none";
+			for (let j = 1; j <= sec_part[i][1]; j++) {//cac phan thuoc khoi
+				document.getElementById("rf_"+sec_part[i][j+1]+"_title").style.display = "none";
+			}
+        }
+        // thoi gian con lai
+        document.getElementById("minutesLeft").value = "45";
+        // phan thi thu nhat
+		current_sec = 1;
+		current_part = 1;
+        
+        SaveOpenedStatus();
+    }
+    function partResumed() {
+	    let test_part_id = "";
+        if (test_part_id == "") { partResuming = false; }
+        else { StartDoingTheTest(); }  
+	}
+
+    var partResuming = true;
+    partResumed();   
+</script><div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; min-width: 0px; max-width: none; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_Main, monospace;"></div></div><div id="eJOY__extension_root" class="eJOY__extension_root_class" style="all: unset;"></div><iframe id="nr-ext-rsicon" style="position: absolute; display: none; width: 50px; height: 50px; z-index: 2147483647; border-style: none; background: transparent;" src="./iTest - Giải pháp toàn diện cho tổ chức thi_files/saved_resource.html"></iframe></body><loom-container id="lo-engage-ext-container"><loom-shadow classname="resolved"></loom-shadow></loom-container></html>
