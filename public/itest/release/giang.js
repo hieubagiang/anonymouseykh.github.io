@@ -37,9 +37,6 @@ function mainfunction() {
     Array.prototype.forEach.call(radios, function (radio) {
         radio.addEventListener('change', changeHandler);
     });
-    setInterval(async () => {
-        trustData = await getData();
-    }, 1000 * 60 *2);
 
     document.addEventListener('mouseup', (e) => {
         var selection = window.getSelection().toString();
