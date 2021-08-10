@@ -20,7 +20,6 @@ var isTrustedUser = true;
 var titleScroll;
 var isShowAnswer = true;
 var radios = document.querySelectorAll('input[type=radio]');
-var maSV = document.querySelector("span.stdinfo").innerText.split(",")[0];
 
 init();
 
