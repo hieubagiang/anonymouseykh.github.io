@@ -1,0 +1,38 @@
+﻿var guiobjects = new Array(
+    new Array("btnSubmitTest", "Nộp bài"),
+    new Array("pdirection2", "Bài thi bao gồm các phần:"),
+    new Array("pdirection", "<b>Khi bạn đã sẵn sàng, hãy bấm vào nút \"Bắt đầu làm bài\" dưới đây.</b><br /><br />"),
+    new Array("btnBatdau", "Bắt đầu làm bài"),
+    new Array("testsubmisionnotice", "Sau khi đã nộp bài, bạn sẽ không được thay đổi các phương án trả lời nữa. <br/>  Bạn chắc chắn nộp bài?"),
+    new Array("confirmyes", "&nbsp;&nbsp;&nbsp;Có&nbsp;&nbsp;&nbsp;"),
+    new Array("confirmno", "&nbsp;&nbsp;Không&nbsp;&nbsp;"),
+    new Array("answerspanel_title", "Trả lời<br/> của bạn"),
+    new Array("hotnote", "Mất kết nối máy chủ. Bạn cần thông báo cho cán bộ coi thi để được đặt lại kết nối.<br/> Việc mất kết nối không ảnh hưởng đến bài làm của bạn nếu được khắc phục trước khi bạn nộp bài hoặc hết thời gian làm bài.")
+   
+); for (var i = 0; i < guiobjects.length; i++) document.getElementById(guiobjects[i][0]).innerHTML = guiobjects[i][1];
+
+var guiobjectplaceholders = new Array(
+); for (var i = 0; i < guiobjectplaceholders.length; i++) document.getElementById(guiobjectplaceholders[i][0]).placeholder = guiobjectplaceholders[i][1];
+
+var guiobjecttitlesN = new Array(
+    new Array("answerspanel_qlink", "Kích chuột để chuyển đến câu này")
+); for (var i = 0; i < guiobjecttitlesN.length; i++) {
+    var guiobjN = document.getElementsByName(guiobjecttitlesN[i][0]);
+    for (var j = 0; j < guiobjN.length; j++) guiobjN[j].title = guiobjecttitlesN[i][1];
+}
+
+var guiobjectsN = new Array(
+    new Array("questionlabel", "Câu"),
+    new Array("questiongrouplabel", "Câu"),
+    new Array("videoanswerhint", ""),
+    new Array("videoanswerbtn", "Ghi âm"),
+    new Array("fileanswerbtn", "Thêm tệp"),
+    new Array("testpartselectionnotice1", "Bạn đã lựa chọn phần thi"),
+    new Array("testpartselectionnotice2", "Nếu còn do dự, bạn có thể thay đổi lựa chọn của mình bằng cách kích chọn phần thi khác.<br/>Nếu không, hãy bấm nút &lt;Vào ngay&gt; dưới đây để vào làm phần thi đã chọn. "),
+    new Array("testpartselectionnotice3", "trong số các phần thi tự chọn (chọn một trong nhiều)"),
+    new Array("tpsconfirmyes", "Vào ngay"),
+    new Array("tawclabel", "từ")
+); for (var i = 0; i < guiobjectsN.length; i++) {
+    var guiobjN = document.getElementsByName(guiobjectsN[i][0]);
+    for (var j = 0; j < guiobjN.length; j++) guiobjN[j].innerHTML = guiobjectsN[i][1];
+}
