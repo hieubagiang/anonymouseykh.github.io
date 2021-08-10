@@ -1,6 +1,7 @@
 # anonymouseykh.github.io
 
-+ Bài học vỡ lòng ko được quên khi khẩn cấp:** Ấn Z để clear màn hình sạch bong. Ấn Z lần nữa để bật tool**
++ Bài học vỡ lòng ko được quên khi khẩn cấp: **Ấn Z để clear màn hình sạch bong. Ấn Z lần nữa để bật tool**
++ Hệ thống auto refresh data sau 1 mỗi 2p, Gần kết thúc bài thi thì có thể ấn R để refresh lại data
 
 **+  Bôi đen để search từ cả câu hỏi và đáp án:**
 ![image](https://user-images.githubusercontent.com/88678327/128914147-58f996ec-94e1-44c7-b160-08707d143372.png)
